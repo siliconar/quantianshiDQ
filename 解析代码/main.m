@@ -24,7 +24,7 @@ clc
 % 移后10:  114  | 161 | 161 | 155
 
 % 打开文件并初始化一些参数
-fid = fopen('D:\workdir\data2.dat', 'rb');
+fid = fopen('C:\Users\bobby\Desktop\sun03\quantianshiDQ\解析代码\LVDS-UDP-20241128_101940-00000.dat', 'rb');
 outputFile = 'corrected_data.csv';
 headerPattern = repmat(0xFF, 1, 10); % 假设帧头最少10个0xFF
 % frameSize = 46; % 仪器数据的字节数
@@ -154,7 +154,9 @@ while ~feof(fid)
             tmp_AmpMotor = calc_BuMa(A(38:39));
             resString{end+1} = num2str(tmp_AmpMotor);
             % 电机转动步数
-            tmp_MotorStep = calc_BuMa(A(40:41));
+%             tmp_MotorStep = calc_BuMa(A(40:41));   % 这是低字节在前的，施亮改成高字节在前，因此注释掉
+            tmp_MotorStep = double(A(40))*256+double(A(41));
+            
             resString{end+1} = num2str(tmp_MotorStep);
             % 电磁阀工作状态
             resString{end+1} = num2str(A(42));
