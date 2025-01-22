@@ -24,7 +24,7 @@ clc
 % 移后10:  114  | 161 | 161 | 155
 
 % 打开文件并初始化一些参数
-fid = fopen('C:\Users\bobby\Desktop\sun03\quantianshiDQ\解析代码\LVDS-UDP-20241128_101940-00000.dat', 'rb');
+fid = fopen('D:\workdir\data_0-主份-转动.dat', 'rb');
 outputFile = 'corrected_data.csv';
 headerPattern = repmat(0xFF, 1, 10); % 假设帧头最少10个0xFF
 % frameSize = 46; % 仪器数据的字节数
