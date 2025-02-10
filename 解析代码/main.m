@@ -24,7 +24,7 @@ clc
 % 移后10:  114  | 161 | 161 | 155
 
 % 打开文件并初始化一些参数
-fid = fopen('D:\workdir\data_0-主份-转动.dat', 'rb');
+fid = fopen('C:\Users\SITP\Desktop\sun02\data_0-备份.dat', 'rb');
 outputFile = 'corrected_data.csv';
 headerPattern = repmat(0xFF, 1, 10); % 假设帧头最少10个0xFF
 % frameSize = 46; % 仪器数据的字节数
@@ -70,9 +70,13 @@ headerEndings =  [0xFE, 0xFD, 0xFB, 0xF7, 0xEE, 0xDC, 0xB9, 0x72];
 bitShifts = [7, 6, 5, 4, 3, 2, 1, 0];   
 tempBuffer = 1:length(headerPattern);   %用于存储帧头的buffer
 last_framenum = -1;   %上一帧帧号
+
+read_cnt = 0;
+
 while ~feof(fid)
     % 逐字节读取，找帧头
     buffer = fread(fid, 1, 'uint8');
+    read_cnt = read_cnt+1;   %记录已经读了多少，用来统计进度条
     if(isempty(buffer))
         break;
     end
@@ -96,6 +100,7 @@ while ~feof(fid)
         % 如果找到有效帧头，开始读取并矫正46字节的仪器数据
         if exist('bitShift', 'var')
             instrumentData = fread(fid, frameSize, 'uint8');
+            read_cnt = read_cnt+frameSize;   %记录已经读了多少，用来统计进度条
             if(length(instrumentData)<frameSize)
                 break;
             end
